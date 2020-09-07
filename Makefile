@@ -2,6 +2,8 @@ include .env
 
 .DEFAULT: all
 
+DATADIR="${PWD}/data-dir"
+
 all: build run
 release: build tag push
 
@@ -15,8 +17,8 @@ run:
 		--detach=true \
 		--name $(IMAGE) \
 		--publish $(CNT_PORT):8080 \
+		-v $(DATADIR):/var/temp/geoserver-data \
 		$(IMAGE)
-		#--volume=data:/var/lib/geoserver-data 
 tag:
 	@echo "[INFO] Tagging $(IMAGE) docker image to $(IMAGE_TAG)"
 	docker tag $(IMAGE):$(IMAGE_TAG) $(REGISTRY)/$(IMAGE):$(IMAGE_TAG)
